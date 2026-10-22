@@ -1,9 +1,9 @@
 'use strict';
-/* Recorded Foley, loaded once from this site's audio/ directory.
+/* Foley and designed character cues, loaded once from this site's audio/ directory.
    Source credits and CC0 licenses: audio/CREDITS.txt and audio/sources.json. */
 const Soundscape = (() => {
-  const files = ['shutter','laugh','hello','cook','snore','children','kiss','fanfare','guitar','cheer','coo','bark','meow','monkey','duck','roar','tourist'];
-  const names = {clown:'laugh',fashion:'shutter',hipster:'hello',barista:'cook',grandpa:'snore',family:'children',couple:'kiss',wedding:'fanfare',busker:'guitar',jogger:'cheer',tourist:'tourist'};
+  const files = ['shutter','laugh','sip','whistle','cook','snore','children','kiss','fanfare','guitar','cheer','coo','bark','meow','monkey','duck','roar','tourist'];
+  const names = {clown:'laugh',fashion:'whistle',hipster:'sip',barista:'cook',grandpa:'snore',family:'children',couple:'kiss',wedding:'fanfare',busker:'guitar',jogger:'cheer',tourist:'tourist'};
   const bytes = new Map(), decoded = new Map(), pending = new Map(), playing = new Set(), heard = new Map(), animalHeard = new Map();
   let preloadJob, warmContext, warmJob, context, bus, generation=0, aimId=null, aimSince=0, aimSpoken=false, lastEgg=-10, lastPhoto=-10, nextVoice=0;
   const status = {loaded:0,failed:[],last:'',event:'',count:0};
@@ -48,7 +48,7 @@ const Soundscape = (() => {
     }catch(e){console.warn('Audio playback failed: '+name,e);return false;}
   }
   function play(name,x=S.pl.x,y=S.pl.y,volume=1,force=false,options={}){
-    name=name==='parade'?'fanfare':name==='fashion'?'shutter':name;
+    name=name==='parade'?'fanfare':name==='fashion'?'whistle':name;
     if(!files.includes(name)||!allowed())return false;
     const a=actx();if(!a)return false;
     // Camera feedback must remain audible even when the photographed subject is far from the player.

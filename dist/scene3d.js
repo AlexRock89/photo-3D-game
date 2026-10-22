@@ -96,6 +96,46 @@ const Park3D = (() => {
 
   const evening=createEveningLighting(scene,lampModels);
 
+  // A shared acoustic guitar: the same readable silhouette for the busker and procession.
+  function acousticGuitar(parent){
+    const p=group(parent,3,20,6);p.name='acoustic-guitar';p.rotation.z=.85;p.rotation.x=-.16;
+    const outline=new T3.Shape();outline.moveTo(0,-9);
+    outline.bezierCurveTo(-9,-9,-9,-3,-5,1);outline.bezierCurveTo(-3,3,-7,4,-6,7);
+    outline.bezierCurveTo(-5,10,5,10,6,7);outline.bezierCurveTo(7,4,3,3,5,1);
+    outline.bezierCurveTo(9,-3,9,-9,0,-9);outline.closePath();
+    const body=mesh(p,new T3.ExtrudeGeometry(outline,{depth:2.8,bevelEnabled:true,bevelSize:.35,bevelThickness:.3,bevelSegments:1,steps:1,curveSegments:8}),'#bc713a');body.name='guitar-body';
+    const face=mesh(p,new T3.ShapeGeometry(outline),'#e4b573',0,0,3.13);face.name='guitar-soundboard';
+    const rosette=cyl(p,0,3,3.24,2.6,2.6,.12,'#85532f',24);rosette.rotation.x=Math.PI/2;
+    const hole=cyl(p,0,3,3.34,2.05,2.05,.14,'#2b2821',24);hole.rotation.x=Math.PI/2;hole.name='guitar-soundhole';
+    box(p,0,-4.4,3.4,4.4,1.3,.5,'#533b2b');box(p,0,-4.1,3.72,3.5,.24,.15,'#f3e1b5');
+    box(p,0,17,1.7,2.8,18,2.3,'#815431');box(p,0,17,3.03,2.9,18,.4,'#48352c');
+    const head=box(p,0,28.3,1.8,4.3,6,2,'#9a6338');head.name='guitar-headstock';
+    for(let i=0;i<10;i++)box(p,0,9.6+i*1.55,3.28,2.9,.16,.13,'#d7c8a3');
+    for(let i=0;i<6;i++){
+      const x=(i-2.5)*.39,string=rod(p,v(x,-4.1,3.88),v(x,26.1,3.5),.065,'#f4e4bb',4);string.name='guitar-string';
+      const side=i<3?-1:1,y=26.5+(i%3)*1.8;
+      rod(p,v(side*1.5,y,1.8),v(side*2.8,y,1.8),.23,'#d9cbaa',6);
+      const peg=ball(p,side*3,y,1.8,.65,.5,.5,'#efe2bd',0);peg.name='guitar-tuner';
+    }
+    return p;
+  }
+  function guitarPose(h,t,solo){
+    h.instrument.rotation.z=.85+Math.sin(t*(solo?8:2))*(solo?.035:.012);
+    // Solve both short articulated arms against points on the actual held model.
+    h.root.updateMatrixWorld(true);
+    for(let i=0;i<2;i++){
+      const target=h.instrument.localToWorld(v(i===0?1.6:0,i===0?-1.5+Math.sin(t*(solo?22:9))*1.5:14,4.5));
+      h.root.worldToLocal(target);const shoulder=h.arms[i].position,delta=target.sub(shoulder);
+      const length=Math.min(10.65,Math.max(1,delta.length())),axis=delta.normalize();
+      const along=(25-5.8*5.8+length*length)/(2*length),bend=Math.sqrt(Math.max(0,25-along*along));
+      const side=v(0,0,1).addScaledVector(axis,-axis.z).normalize();
+      const elbow=axis.clone().multiplyScalar(along).addScaledVector(side,bend);
+      h.arms[i].quaternion.setFromUnitVectors(v(0,-1,0),elbow.clone().normalize());
+      const forearm=axis.multiplyScalar(length).sub(elbow).applyQuaternion(h.arms[i].quaternion.clone().invert());
+      h.elbows[i].quaternion.setFromUnitVectors(v(0,-1,0),forearm.normalize());
+    }
+  }
+
   // Simple low-poly humanoid: separate limbs are animated, no sprite billboards.
   function human(o={},hero=false,kid=false){
     const p=group(scene),root=group(p),h={group:p,root,knees:[],elbows:[]};const skin=o.skin||'#f2cdb0',hc=o.hair||'#594638',top=hero?'#303432':(o.top||'#b78570'),pants=hero?'#303432':(o.pants||'#556473'),shoe=hero?'#303631':(o.shoes||'#ece8d8');
@@ -135,7 +175,7 @@ const Park3D = (() => {
     if(o.nose){for(let i=0;i<3;i++)ball(root,0,28-i*4,4,1,1,1,['#bc5661','#4388af','#bc5661'][i],0);for(const x of[-2,2])ball(root,x,31,4,2,1.2,1,'#bf5264',0);}
     if(o.beard){for(const x of[-3,0,3])box(root,x,24,3.6,.6,12,.3,'#d59972');for(const y of[20,24,28])box(root,0,y,3.6,8,.6,.3,'#d59972');}
     if(o.dress&&o.glasses){box(root,8,14,1,5,6,3,'#a5526a');ring(root,8,18,1,2.2,.4,'#d9ad60').rotation.x=0;}
-    if(o.parade==='guitarist'){const inst=group(root,2,22,5);ball(inst,0,0,0,5,6,2,'#c58b4b');box(inst,-6,6,0,11,2,2,'#735239').rotation.z=.55;ball(inst,0,1,2,1.7,1.7,.3,'#3f4136');h.instrument=inst;}
+    if(o.parade==='guitarist'||o.guitar){h.instrument=acousticGuitar(root);rod(root,v(-5,31,1),v(7,14,5),.65,'#514336');}
     if(o.parade==='drummer'){const inst=group(root,0,17,7);cyl(inst,0,0,0,5,5,7,'#b77a48');cyl(inst,0,3.7,0,5,5,.6,'#f4e5bd');h.instrument=inst;}
     if(kid)p.scale.setScalar(.62);
     h.hero=hero;h.o=o;return h;
@@ -178,7 +218,7 @@ const Park3D = (() => {
   function updateExtras(t){for(const m of extras.values())m.visible=false;
     for(const cl of S.clients){if(cl.id==='hipster'||cl.id==='barista'){const up=!!cl.phase,m=extra(cl.id+'cup',cup);m.position.set(cl.x+8,up?49:23,cl.y*G+6);if(up&&cl.id==='barista'){const h=extra('latteheart',heart);h.position.set(cl.x+8,62+Math.sin(t*4),cl.y*G);}}
       if(['fashion','wedding','couple'].includes(cl.id)&&(cl.pose===2||cl.kiss)){const h=extra(cl.id+'heart',heart);h.position.set(cl.x,60+Math.sin(t*4),cl.y*G);}
-      if(cl.id==='busker'){const m=extra('guitar',()=>{const p=group(scene);ball(p,0,0,0,5,6,2,'#bc9462');ball(p,-2,3,0,4,4,2,'#bc9462');box(p,-6,6,0,11,2.5,2,'#806e4e').rotation.z=.45;ball(p,0,1,2,1.5,1.5,.2,'#625741',0);return p;});m.position.set(cl.x+2,22,cl.y*G+6);m.rotation.z=cl.solo?Math.sin(t*14)*.15:0;}
+
       if(cl.id==='clown')for(let i=0;i<3;i++){const m=extra('ball'+i,()=>ball(scene,0,0,0,2,2,2,['#be8072','#91a5a8','#c9b476'][i],1));const a=t*6+i*2.09;m.position.set(cl.x+Math.cos(a)*9,55+cl.jz*G+Math.abs(Math.sin(a))*12,cl.y*G);}
       if(cl.id==='grandpa'){const m=extra('paper',()=>{const p=group(scene);box(p,0,0,0,13,8,.3,'#e8e3cc');for(let i=0;i<3;i++)box(p,0,2-i*2, .2,9,.4,.2,'#9fa493');return p;});m.position.set(cl.x,21,cl.y*G+7);}
     }
@@ -187,7 +227,7 @@ const Park3D = (() => {
   function approach(current,target,rate=12){return current+(target-current)*(1-Math.exp(-rate*animationDt));}
   function angleToward(current,target){return current+Math.atan2(Math.sin(target-current),Math.cos(target-current))*(1-Math.exp(-12*animationDt));}
   function updateModel(r){
-    let h=models.get(r.key);if(!h){h=r.kind==='person'||r.kind==='hero'?human(r.o,r.kind==='hero',r.kid):animal(r.kind,r.o);models.set(r.key,h);}const o=r.o;h.group.visible=true;
+    let h=models.get(r.key);if(!h){h=r.kind==='person'||r.kind==='hero'?human({...r.o,guitar:r.key.startsWith('busker:')},r.kind==='hero',r.kid):animal(r.kind,r.o);models.set(r.key,h);}const o=r.o;h.group.visible=true;
     const z=(o.z||0)*G,dx=h.lastX===undefined?0:r.x-h.lastX,dy=h.lastY===undefined?0:r.y-h.lastY,motion=Math.hypot(dx,dy);h.lastX=r.x;h.lastY=r.y;h.group.position.set(r.x,z,r.y*G);
     const ph=o.ph||0,moving=!!o.moving||motion>.02,sw=moving?Math.sin(ph)*.48:0;
     let heading=h.heading===undefined?0:h.heading;
@@ -216,7 +256,7 @@ const Park3D = (() => {
         h.phoneFlash.visible=!!o.phoneFlash;
         if(h.phoneFlash.visible){h.group.updateMatrixWorld(true);h.phone.getWorldPosition(h.phoneFlash.position);h.phoneFlash.position.y+=3;h.phoneFlash.position.z+=2;h.phoneFlash.rotation.z=animationTime*2;}
       }
-      if(o.parade==='guitarist'||r.key.startsWith('busker:')){h.arms[0].rotation.x=-.7;h.elbows[0].rotation.x=-.65+Math.sin(ph*2)*.18;h.arms[1].rotation.x=-.9;}
+      if(h.instrument&&h.instrument.name==='acoustic-guitar')guitarPose(h,animationTime,r.key.startsWith('busker:')&&!!S.clients.find(c=>c.id==='busker'&&c.solo));
       if(o.parade==='drummer')for(let i=0;i<2;i++)h.elbows[i].rotation.x=-.7+Math.sin(ph*2+i*Math.PI)*.3;
       h.head.rotation.x=approach(h.head.rotation.x,o.sleep?.23+Math.sin(animationTime*2)*.05:Math.sin(animationTime*1.3+r.x)*.025);
       if(h.skirt){h.skirt.rotation.z=Math.sin(ph)*.04*(moving?1:0);h.skirt.scale.set(1+Math.abs(sw)*.08,1,1);}

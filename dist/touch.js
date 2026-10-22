@@ -19,8 +19,8 @@ function startTouchIntro() {
   let seen = false; try { seen = localStorage.getItem('oksana-touch') === '1'; } catch (e) { }
   if (!seen) { S.intro = 8; try { localStorage.setItem('oksana-touch', '1'); } catch (e) { } }
 }
-/* Кнопка «?»: на заставке — крупная, справа под блоком бонусов; в игре — квадрат справа под верхней панелью */
-function helpBtnRect() { return S.mode === 'title' ? { x: 564, y: 246, w: 36, h: 36 } : { x: VW - 40, y: 22, w: 32, h: 32 }; }
+/* Кнопка «?»: на заставке — крупная, справа под блоком бонусов; в игре — справа ниже панели и оповещения о бонусе */
+function helpBtnRect() { return S.mode === 'title' ? { x: 564, y: 246, w: 36, h: 36 } : { x: VW - 40, y: S.mode === 'play' ? 104 : 22, w: 32, h: 32 }; }
 const inHelpBtn = p => { const b = helpBtnRect(); return p.x >= b.x - 8 && p.x <= b.x + b.w + 8 && p.y >= b.y - 8 && p.y <= b.y + b.h + 8; };
 
 function touchDown(id, p) {

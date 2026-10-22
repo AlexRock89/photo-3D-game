@@ -12,18 +12,6 @@
     "processing": "Trimmed, short fades, 55 Hz high-pass, loudness normalized, mono MP3"
   },
   {
-    "file": "hello.mp3",
-    "author": "steveukguy",
-    "id": 164612,
-    "page": "https://freesound.org/people/steveukguy/sounds/164612/",
-    "url": "https://cdn.freesound.org/previews/164/164612_2982740-hq.mp3",
-    "bytes": 12629,
-    "license": "CC0-1.0",
-    "trim_start": 0,
-    "duration": 0.55,
-    "processing": "Trimmed, short fades, 55 Hz high-pass, loudness normalized, mono MP3"
-  },
-  {
     "file": "shutter.mp3",
     "author": "jdaniel1999",
     "id": 376205,
@@ -200,5 +188,20 @@
     ],
     "license": "CC0-1.0",
     "processing": "Recorded hello + 120 ms gap + quieter recorded shutter, mono MP3"
+  },
+  {
+    "file": "sip.mp3",
+    "author": "Original sound design / cabled_mess",
+    "page": "https://freesound.org/people/cabled_mess/sounds/486626/",
+    "license": "CC0-1.0",
+    "duration": 1.65,
+    "processing": "Original filtered suction and swallow, with a short quiet edited mouth-Foley fragment from kiss.mp3; fades, mono MP3"
+  },
+  {
+    "file": "whistle.mp3",
+    "author": "Original sound design",
+    "license": "CC0-1.0",
+    "duration": 1.72,
+    "processing": "Original breath-driven two-tone whistle with pitch glides, slight vibrato and breath noise; fades, mono MP3"
   }
 ]

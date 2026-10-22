@@ -1,11 +1,11 @@
 Sound effects used in Ordinary Day of a Photographer
 
-All source recordings below are published under CC0 1.0 Universal:
+Third-party source recordings below are published under CC0 1.0 Universal:
 https://creativecommons.org/publicdomain/zero/1.0/
 Public preview audio was downloaded from each source page on 2026-10-22.
 Edits: trimming, fades, high-pass filtering, loudness normalization and mono encoding.
-The fanfare and dinosaur are designed sound effects; the other files are recordings.
-Fashion uses the shutter recording; the procession uses the fanfare.
+The fanfare, dinosaur, sip and whistle include designed sound effects; the other files are recordings.
+Fashion uses whistle.mp3; the hipster uses sip.mp3; the procession uses the fanfare.
 
 laugh.mp3 — Aliamba — https://freesound.org/people/Aliamba/sounds/615290/
 hello.mp3 — steveukguy — https://freesound.org/people/steveukguy/sounds/164612/
@@ -25,3 +25,7 @@ coo.mp3 — 5ro4 — https://freesound.org/people/5ro4/sounds/649390/
 roar.mp3 — Alessandrobraz — https://freesound.org/people/Alessandrobraz/sounds/708641/
 
 tourist.mp3 — composite of hello.mp3 (steveukguy) and shutter.mp3 (jdaniel1999), both CC0 1.0; see sources above.
+
+sip.mp3 — original sound design, CC0-1.0; soft suction and swallow with edited mouth Foley from cabled_mess/kiss.mp3.
+whistle.mp3 — original sound design, CC0-1.0; two-tone breath whistle, pitch glides and vibrato.
+The new sip and whistle are designed effects, not downloaded human recordings.

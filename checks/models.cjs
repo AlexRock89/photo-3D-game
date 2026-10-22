@@ -27,3 +27,16 @@ assert(run("Park3D.models.get('pest0:0').phone&&Park3D.models.get('pest0:0').pho
 assert(run("Park3D.models.get('pest1:0').phone&&!Park3D.models.get('pest1:0').phoneFlash.visible"));
 run('startGame();Park3D.draw(0)');assert.equal(run('Park3D.lighting.amount'),0);assert.equal(run('Park3D.lighting.torch.intensity'),0);assert(run("!Park3D.models.get('oksana:0').torch.visible"));
 console.log('PASS: dusk ramp/pause/reset, every lamp, held torch and directional beam, two independent selfie rigs and flashes.');
+
+// The guitar stays with the articulated musician and both hands follow the instrument.
+run("startGame();S.clients=[new Busker()];Park3D.draw(3);const guitarist=Park3D.models.get('busker:0');");
+assert(run("guitarist.instrument.parent===guitarist.root"));
+assert.equal(run("guitarist.instrument.getObjectsByProperty('name','guitar-string').length"),6);
+assert.equal(run("guitarist.instrument.getObjectsByProperty('name','guitar-tuner').length"),6);
+assert(run("guitarist.instrument.getObjectByName('guitar-body').geometry.type==='ExtrudeGeometry'"));
+run("const guitarRotation=guitarist.instrument.rotation.z;S.clients[0].solo=true;Park3D.draw(3.05)");
+assert.notEqual(run('guitarist.instrument.rotation.z'),run('guitarRotation'));
+run("Park3D.scene.updateMatrixWorld(true);const wrists=guitarist.elbows.map(e=>e.localToWorld(new THREE.Vector3(0,-5.8,0)));const neckTarget=guitarist.instrument.localToWorld(new THREE.Vector3(0,14,4.5));");
+assert(run("wrists[1].distanceTo(neckTarget)<1.5"),'fretting hand follows the neck');
+assert(run("[...Park3D.models.values()].filter(h=>h.instrument&&h.instrument.name==='acoustic-guitar').every(h=>Number.isFinite(h.elbows[0].quaternion.w))"));
+console.log('PASS: acoustic guitar silhouette, six strings/tuners, attached instrument, solo motion and fretting hand.');
