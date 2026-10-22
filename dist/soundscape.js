@@ -2,8 +2,8 @@
 /* Foley and designed character cues, loaded once from this site's audio/ directory.
    Source credits and CC0 licenses: audio/CREDITS.txt and audio/sources.json. */
 const Soundscape = (() => {
-  const files = ['shutter','laugh','sip','whistle','cook','snore','children','kiss','fanfare','guitar','cheer','coo','bark','meow','monkey','duck','roar','tourist'];
-  const names = {clown:'laugh',fashion:'whistle',hipster:'sip',barista:'cook',grandpa:'snore',family:'children',couple:'kiss',wedding:'fanfare',busker:'guitar',jogger:'cheer',tourist:'tourist'};
+  const files = ['shutter','laugh','hi','whistle','cook','snore','children','kiss','fanfare','guitar','cheer','coo','bark','meow','monkey','duck','roar','tourist'];
+  const names = {clown:'laugh',fashion:'whistle',hipster:'hi',barista:'cook',grandpa:'snore',family:'children',couple:'kiss',wedding:'fanfare',busker:'guitar',jogger:'cheer',tourist:'tourist'};
   const bytes = new Map(), decoded = new Map(), pending = new Map(), playing = new Set(), heard = new Map(), animalHeard = new Map();
   let preloadJob, warmContext, warmJob, context, bus, generation=0, aimId=null, aimSince=0, aimSpoken=false, lastEgg=-10, lastPhoto=-10, nextVoice=0;
   const status = {loaded:0,failed:[],last:'',event:'',count:0};

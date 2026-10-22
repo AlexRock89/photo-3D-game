@@ -223,6 +223,39 @@ const Park3D = (() => {
       if(cl.id==='grandpa'){const m=extra('paper',()=>{const p=group(scene);box(p,0,0,0,13,8,.3,'#e8e3cc');for(let i=0;i<3;i++)box(p,0,2-i*2, .2,9,.4,.2,'#9fa493');return p;});m.position.set(cl.x,21,cl.y*G+7);}
     }
   }
+  // Camera-facing musical notes leave the soundboard during the actual solo.
+  const musicNotes={particles:[],next:0,lastTime:0};
+  function drawMusicNotes(){
+    const t=S.t,notes=musicNotes.particles;
+    if(S.mode!=='play'||t<musicNotes.lastTime){notes.length=0;musicNotes.next=t;}
+    musicNotes.lastTime=t;
+    for(let i=notes.length-1;i>=0;i--)if(t-notes[i].born>=1.6)notes.splice(i,1);
+    const busker=S.clients.find(c=>c.id==='busker'),h=models.get('busker:0');
+    if(S.mode==='play'&&!S.help&&S.intro<=0&&busker&&busker.solo&&h&&h.group.visible&&t>=musicNotes.next){
+      const origin=h.instrument.localToWorld(v(0,3,5)),index=Math.round(t/.22);
+      notes.push({born:t,origin,index});musicNotes.next=t+.22;
+    }
+    if(!busker||!h||!h.group.visible){notes.length=0;return;}
+    ctx.save();
+    for(const n of notes){
+      const age=t-n.born,k=age/1.6,dir=n.index%2?1:-1;
+      const world=n.origin.clone().add(v(dir*(5+18*k)+Math.sin(age*5+n.index)*3,9+39*k,5*k));
+      world.project(camera);const x=(world.x+1)*VW/2,y=(1-world.y)*VH/2;
+      if(x<-15||x>VW+15||y<45||y>VH+15)continue;
+      ctx.save();ctx.translate(x,y);ctx.rotate(dir*(.1+Math.sin(age*3)*.1));
+      ctx.globalAlpha=Math.min(1,age/.08)*Math.min(1,(1.6-age)/.45);
+      const col=['#b97533','#608755','#8f69aa'][n.index%3];
+      // Filled heads, thick stems and a light rim stay legible over the grass.
+      ctx.lineCap='round';ctx.lineJoin='round';
+      for(const outline of [true,false]){
+        ctx.strokeStyle=outline?'#fff5d9':col;ctx.fillStyle=col;ctx.lineWidth=outline?2.8:1.35;
+        ctx.beginPath();ctx.moveTo(1.5,0);ctx.lineTo(1.5,-8);ctx.lineTo(6,-9);ctx.lineTo(6,-2);ctx.stroke();
+        for(const [dx,dy]of [[0,0],[4.5,-2]]){ctx.beginPath();ctx.ellipse(dx,dy,2,1.4,-.35,0,Math.PI*2);if(outline)ctx.stroke();else ctx.fill();}
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
   let animationTime=0,animationDt=1/60,lastAnimationTime=null;
   function approach(current,target,rate=12){return current+(target-current)*(1-Math.exp(-rate*animationDt));}
   function angleToward(current,target){return current+Math.atan2(Math.sin(target-current),Math.cos(target-current))*(1-Math.exp(-12*animationDt));}
@@ -282,9 +315,9 @@ const Park3D = (() => {
     const cx=Math.round(S.cam.x)+320,cz=(Math.round(S.cam.y)+180)*G;
     camera.position.set(cx,1000,cz+1000);camera.lookAt(cx,0,cz);camera.updateMatrixWorld();
     const rainy=S.wx&&S.wx.type==='rain'&&S.mode==='play',dusk=eveningAmount();sun.intensity=lerp(rainy?1.5:2.6,.48,dusk);ambient.intensity=lerp(rainy?2.3:2.55,1.45,dusk);ambient.color.set('#fff7e7').lerp(duskSky,dusk);sun.color.set('#fff1d5').lerp(duskSun,dusk);evening.update(dusk,hero);
-    renderer.render(scene,camera);ctx.drawImage(renderer.domElement,0,0,VW,VH);evening.draw(ctx,camera,!!renderer.software,hero);
+    renderer.render(scene,camera);ctx.drawImage(renderer.domElement,0,0,VW,VH);evening.draw(ctx,camera,!!renderer.software,hero);drawMusicNotes();
     for(const tx of S.texts){ctx.globalAlpha=1-Math.pow(tx.t/1.5,3);T(tx.text,tx.x-S.cam.x,tx.y-S.cam.y-tx.t*16,tx.col,tx.big?14:8,'center');}ctx.globalAlpha=1;
   }
   function project(x,y,height=0){const p=new T3.Vector3(x,height,y*G).project(camera);return{x:(p.x+1)*VW/2,y:(1-p.y)*VH/2};}
-  return{draw,project,scene,camera,renderer,models,lighting:evening.state,records:()=>records,scale:3};
+  return{draw,project,scene,camera,renderer,models,musicNotes,lighting:evening.state,records:()=>records,scale:3};
 })();

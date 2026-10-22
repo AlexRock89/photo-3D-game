@@ -190,18 +190,22 @@
     "processing": "Recorded hello + 120 ms gap + quieter recorded shutter, mono MP3"
   },
   {
-    "file": "sip.mp3",
-    "author": "Original sound design / cabled_mess",
-    "page": "https://freesound.org/people/cabled_mess/sounds/486626/",
-    "license": "CC0-1.0",
-    "duration": 1.65,
-    "processing": "Original filtered suction and swallow, with a short quiet edited mouth-Foley fragment from kiss.mp3; fades, mono MP3"
-  },
-  {
     "file": "whistle.mp3",
     "author": "Original sound design",
     "license": "CC0-1.0",
     "duration": 1.72,
     "processing": "Original breath-driven two-tone whistle with pitch glides, slight vibrato and breath noise; fades, mono MP3"
+  },
+  {
+    "file": "hi.mp3",
+    "author": "florianreichelt",
+    "id": 447391,
+    "page": "https://freesound.org/people/florianreichelt/sounds/447391/",
+    "url": "https://cdn.freesound.org/previews/447/447391_6253486-hq.mp3",
+    "bytes": 116736,
+    "license": "CC0-1.0",
+    "trim_start": 2.38,
+    "duration": 0.82,
+    "processing": "Single spoken Hi; trimmed silence, short fades, gentle filtering, loudness normalized, mono MP3"
   }
 ]

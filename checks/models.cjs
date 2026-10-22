@@ -40,3 +40,14 @@ run("Park3D.scene.updateMatrixWorld(true);const wrists=guitarist.elbows.map(e=>e
 assert(run("wrists[1].distanceTo(neckTarget)<1.5"),'fretting hand follows the neck');
 assert(run("[...Park3D.models.values()].filter(h=>h.instrument&&h.instrument.name==='acoustic-guitar').every(h=>Number.isFinite(h.elbows[0].quaternion.w))"));
 console.log('PASS: acoustic guitar silhouette, six strings/tuners, attached instrument, solo motion and fretting hand.');
+
+// Notes are emitted during playing, freeze with the game, then expire without leaking.
+run("startGame();S.clients=[new Busker()];S.clients[0].solo=false;S.t=4;Park3D.draw(4)");
+assert.equal(run('Park3D.musicNotes.particles.length'),0);
+run("S.clients[0].solo=true;S.t=4.3;Park3D.draw(S.t);S.t=4.6;Park3D.draw(S.t)");
+assert.equal(run('Park3D.musicNotes.particles.length'),2);
+run("S.help=true;const noteBirth=Park3D.musicNotes.particles[0].born;for(let i=0;i<10;i++)Park3D.draw(S.t)");
+assert.equal(run('Park3D.musicNotes.particles.length'),2);assert.equal(run('Park3D.musicNotes.particles[0].born'),run('noteBirth'));
+run("S.help=false;S.clients[0].solo=false;S.t=7;Park3D.draw(S.t)");assert.equal(run('Park3D.musicNotes.particles.length'),0);
+run("S.clients[0].solo=true;S.t=8;Park3D.draw(S.t);startGame();Park3D.draw(0)");assert.equal(run('Park3D.musicNotes.particles.length'),0);
+console.log('PASS: guitar notes during play, pause freeze, expiry and restart cleanup.');

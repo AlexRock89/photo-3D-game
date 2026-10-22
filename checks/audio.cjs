@@ -10,14 +10,14 @@ run('actx=()=>audioStub');
 (async()=>{
  await run('Soundscape.preload()');await run('Soundscape.warm(audioStub)');assert.equal(run('Soundscape.status.loaded'),18);
  assert.equal(sources.length,18);assert(sources.every(s=>s.license==='CC0-1.0'));
- assert.equal(run("Soundscape.names.hipster"),'sip');assert.equal(run("Soundscape.names.fashion"),'whistle');
+ assert.equal(run("Soundscape.names.hipster"),'hi');assert.equal(run("Soundscape.names.fashion"),'whistle');
  // No character chatter just because the player is standing beside someone.
  run("startGame();S.t=10;S.clients=[new Fashion()];S.pl.x=490;S.pl.y=178;S.fr={x:20,y:20,w:60,h:40};Soundscape.update();S.t+=1;Soundscape.update()");
  assert.equal(run('Soundscape.status.count'),0);
  // Every type is audible when framed, even if the player is far away.
  for(const type of ['Clown','Fashion','Hipster','Barista','Grandpa','Family','CoupleDog','Wedding','Busker','Jogger']){
   run(`Soundscape.reset();S.clients=[new ${type}()];S.t=20;S.pl.x=20;S.pl.y=20;S.fr={...S.clients[0].members()[0]};Soundscape.update();S.t+=.4;Soundscape.update();`);
-  const id=run('S.clients[0].id');if(id==='hipster'||id==='fashion')assert.equal(run('Soundscape.status.last'),id==='hipster'?'sip':'whistle');assert.equal(run('Soundscape.status.event'),'aim:'+id);
+  const id=run('S.clients[0].id');if(id==='hipster'||id==='fashion')assert.equal(run('Soundscape.status.last'),id==='hipster'?'hi':'whistle');assert.equal(run('Soundscape.status.event'),'aim:'+id);
   const count=run('Soundscape.status.count');run('S.t+=20;Soundscape.update()');assert.equal(run('Soundscape.status.count'),count,'no repeated chatter while staying aimed');
   run('Soundscape.photo(S.fr)');assert.equal(run('Soundscape.status.event'),'photo:'+id,'aim must not suppress photo');
   run('Soundscape.photo(S.fr)');assert.equal(run('Soundscape.status.count'),count+1,'photo cooldown');
