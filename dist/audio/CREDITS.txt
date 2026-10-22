@@ -1,0 +1,27 @@
+Sound effects used in Ordinary Day of a Photographer
+
+All source recordings below are published under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+Public preview audio was downloaded from each source page on 2026-10-22.
+Edits: trimming, fades, high-pass filtering, loudness normalization and mono encoding.
+The fanfare and dinosaur are designed sound effects; the other files are recordings.
+Fashion uses the shutter recording; the procession uses the fanfare.
+
+laugh.mp3 — Aliamba — https://freesound.org/people/Aliamba/sounds/615290/
+hello.mp3 — steveukguy — https://freesound.org/people/steveukguy/sounds/164612/
+shutter.mp3 — jdaniel1999 — https://freesound.org/people/jdaniel1999/sounds/376205/
+kiss.mp3 — cabled_mess — https://freesound.org/people/cabled_mess/sounds/486626/
+snore.mp3 — dmsoler — https://freesound.org/people/dmsoler/sounds/739758/
+children.mp3 — craigsmith — https://freesound.org/people/craigsmith/sounds/479837/
+cook.mp3 — BeeProductive — https://freesound.org/people/BeeProductive/sounds/382287/
+guitar.mp3 — uzerx — https://freesound.org/people/uzerx/sounds/60139/
+fanfare.mp3 — ricniclas — https://freesound.org/people/ricniclas/sounds/449069/
+bark.mp3 — michael_grinnell — https://freesound.org/people/michael_grinnell/sounds/464400/
+meow.mp3 — tuberatanka — https://freesound.org/people/tuberatanka/sounds/110011/
+duck.mp3 — gibarroule — https://freesound.org/people/gibarroule/sounds/365133/
+cheer.mp3 — qubodup — https://freesound.org/people/qubodup/sounds/182572/
+monkey.mp3 — saraonsins — https://freesound.org/people/saraonsins/sounds/219816/
+coo.mp3 — 5ro4 — https://freesound.org/people/5ro4/sounds/649390/
+roar.mp3 — Alessandrobraz — https://freesound.org/people/Alessandrobraz/sounds/708641/
+
+tourist.mp3 — composite of hello.mp3 (steveukguy) and shutter.mp3 (jdaniel1999), both CC0 1.0; see sources above.

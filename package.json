@@ -1,0 +1,11 @@
+{
+  "name": "photographer-day",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "Обычный день фотографа — браузерная игра в объёмном парке",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node checks/simulation.cjs && node checks/navigation.cjs && node checks/features.cjs && node checks/audio.cjs && node checks/models.cjs"
+  }
+}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#f4f1e9"><title>Обычный день фотографа · Оксана Клименко</title>
+<meta name="description" content="Три минуты, целый парк историй и одна Оксана. Лови удачный момент в уютной объёмной игре про фотографа.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="fonts/fonts.css"><link rel="stylesheet" href="style.css">
+</head><body>
+<div id="rotate"><div class="rotate-icon">↻</div><b>Поверни телефон</b><span>В парке удобнее гулять в горизонтальном положении</span></div>
+<main id="wrap">
+<header><a class="brand" href="./" aria-label="На главную"><svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8 3H16L18 7H20A3 3 0 0 1 23 10V19A3 3 0 0 1 20 22H4A3 3 0 0 1 1 19V10A3 3 0 0 1 4 7H6ZM12 10A4.5 4.5 0 1 0 12 19A4.5 4.5 0 1 0 12 10Z" fill-rule="evenodd"/></svg><span>ОБЫЧНЫЙ ДЕНЬ ФОТОГРАФА<small>МАЛЕНЬКИЕ ИСТОРИИ БОЛЬШОГО ПАРКА</small></span></a><nav><button id="music" aria-label="Выключить музыку" title="Музыка · N">♫</button><button id="sound" aria-label="Выключить звук" title="Звук · M">♪</button><button id="help" title="Правила и пауза · Пробел">Как играть <span>?</span></button><button id="full" aria-label="Полный экран" title="Полный экран">⛶</button></nav></header>
+<div id="stage"><canvas id="game" width="1920" height="1080" tabindex="0" aria-label="Игра: фотограф Оксана снимает клиентов в объёмном парке"></canvas><div id="loading"><span class="loading-camera">◎</span>Открываем парк…</div><div id="fallback" hidden>Для объёмной графики нужен WebGL.<br>Попробуй открыть игру в другом браузере.</div></div>
+<footer id="hint"><div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>гулять</span><i></i><b>ЛКМ</b><span>снимок</span><b>ПКМ</b><span>держать для фокуса</span><i></i><kbd>Пробел</kbd><span>пауза</span></div><span class="footer-note">Лови момент. Остальное подождёт.</span></footer>
+</main>
+<script src="vendor/three.js"></script><script src="art-people.js"></script><script src="art-world.js"></script><script src="actors.js"></script><script src="sound.js"></script><script src="soundscape.js"></script><script src="systems.js"></script><script src="touch.js"></script><script src="navigation.js"></script><script src="game.js"></script><script src="parade.js"></script><script src="software3d.js"></script><script src="visual-icons.js"></script><script src="evening.js"></script><script src="scene3d.js"></script><script src="ui.js"></script><script src="runtime.js"></script>
+</body></html>

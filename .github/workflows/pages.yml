@@ -1,0 +1,45 @@
+name: Check and publish game
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  check-and-package:
+    permissions:
+      contents: read
+      pages: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Check game mechanics, models and audio
+        run: npm test
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload game files
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: check-and-package
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish game
+        id: deployment
+        uses: actions/deploy-pages@v4
